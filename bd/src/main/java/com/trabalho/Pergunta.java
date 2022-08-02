@@ -3,11 +3,9 @@ package com.trabalho;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Comparator;
 
 import org.apache.jena.query.*;
 
-import com.fasterxml.jackson.databind.deser.std.CollectionDeserializer.CollectionReferringAccumulator;
 import com.trabalho.models.Resources;
 
 public class Pergunta {
@@ -27,7 +25,7 @@ public class Pergunta {
 
         String query1 = ""
         + "prefix rdfs:    <http://www.w3.org/2000/01/rdf-schema#>\n"
-        + "PREFIX dbo:     <http://dbpedia.org/ontology/>"
+        + "prefix dbo:     <http://dbpedia.org/ontology/>"
         + "\n"
         + "select distinct ?resource VAR where {\n"
         + "  ?resource rdfs:label ?label.\n"
@@ -57,7 +55,6 @@ public class Pergunta {
         System.out.println("\n" + query1 + "\n");
 
         ParameterizedSparqlString qs = new ParameterizedSparqlString(query1);
-
 
         QueryExecution exec = QueryExecution.service("http://dbpedia.org/sparql", qs.asQuery());
 
@@ -94,6 +91,7 @@ public class Pergunta {
             double tempLIB = (double) -1*(val/listSize)*(1 - Math.log(val/listSize));
             resultadoLIB.add(tempLIB);
         }
+
     }
 
     private static void computaRanks(){
@@ -116,9 +114,9 @@ public class Pergunta {
         Collections.sort(resourceList, Resources.ResourceValueComparator);
         for (int i=0; i<= 4; i++){
             try {
-                System.out.println(resourceList.get(i).getResources());
+                System.out.println("Resurso: " + resourceList.get(i).getResources() + " | | " + "Peso:" + resourceList.get(i).getValue() + "\n");
             } catch (Exception e) {
-                //TODO: handle exception
+                System.out.println("Oops, tem menos de 5 resultados");
             }
         }
     }
