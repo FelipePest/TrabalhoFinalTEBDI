@@ -44,7 +44,7 @@ public class Main {
     }
 
     public static void loadStopWords() throws IOException{
-        stopwords = Files.readAllLines(Paths.get("bd/src/main/java/com/trabalho/resources/english_stopwords.txt"));
+        stopwords = Files.readAllLines(Paths.get("src/main/java/com/trabalho/resources/english_stopwords.txt"));
     }
 
     public static String removeAll(){
