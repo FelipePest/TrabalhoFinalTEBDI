@@ -34,7 +34,7 @@ public class Pergunta {
         + "  ?resource dbo:abstract ?abstract.\n"
         + "  FILTER(LANG(?label) = '' || LANGMATCHES(LANG(?label), 'en')).\n"
         + "  FILTER(LANG(?abstract) = '' || LANGMATCHES(LANG(?abstract), 'en')).\n"
-        + "  FILTER (ALGO ) "
+        + "  FILTER (ALGO ) \n"
         + "  BINDER } ";
 
 
@@ -54,7 +54,7 @@ public class Pergunta {
 
         query1 = query1.replace("VAR", "");
 
-        System.out.println(query1);
+        System.out.println("\n" + query1 + "\n");
 
         ParameterizedSparqlString qs = new ParameterizedSparqlString(query1);
 
@@ -114,7 +114,7 @@ public class Pergunta {
 
     private static void ordenaRecursos(){
         Collections.sort(resourceList, Resources.ResourceValueComparator);
-        for (int i=0; i<= 5; i++){
+        for (int i=0; i<= 4; i++){
             try {
                 System.out.println(resourceList.get(i).getResources());
             } catch (Exception e) {
