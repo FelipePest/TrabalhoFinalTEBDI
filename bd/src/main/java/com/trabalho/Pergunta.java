@@ -32,8 +32,8 @@ public class Pergunta {
         + "  ?resource dbo:abstract ?abstract.\n"
         + "  FILTER(LANG(?label) = '' || LANGMATCHES(LANG(?label), 'en')).\n"
         + "  FILTER(LANG(?abstract) = '' || LANGMATCHES(LANG(?abstract), 'en')).\n"
-        + "  FILTER (ALGO ) \n"
-        + "  BINDER } ";
+        + "  FILTER (ALGO ). \n"
+        + "  BINDER } LIMIT 10000";
 
 
         for (int i =0; i < query.length; i++){
@@ -42,7 +42,7 @@ public class Pergunta {
 
             query1 = query1.replace("VAR", "?"+ i + " " + "VAR");
 
-            query1 = query1.replace("BINDER", "BIND(IF(regex(?abstract, " + "\"" + query[i] +  "\""+ " , 'i')  || regex(?label, " + "\"" + query[i] +  "\""+ ", 'i'), 'TRUE', 'FALSE') as ?" + i + " ) \n BINDER");
+            query1 = query1.replace("BINDER", " BIND(IF(regex(?abstract, " + "\"" + query[i] +  "\""+ " , 'i')  || regex(?label, " + "\"" + query[i] +  "\""+ ", 'i'), 'TRUE', 'FALSE') as ?" + i + " ). \n BINDER");
 
         }
 
@@ -56,7 +56,9 @@ public class Pergunta {
 
         ParameterizedSparqlString qs = new ParameterizedSparqlString(query1);
 
-        QueryExecution exec = QueryExecution.service("http://dbpedia.org/sparql", qs.asQuery());
+        QueryExecution exec = QueryExecution.service("https://dbpedia.org/sparql", qs.asQuery());
+
+        System.out.println(exec);
 
         ResultSet results = exec.execSelect();
 
@@ -66,7 +68,7 @@ public class Pergunta {
 
             ArrayList<Boolean> bool = new ArrayList<>();
 
-            QuerySolution set = results.next();
+            QuerySolution set = results.nextSolution();
 
             for (int i = 0; i<query.length; i++){
                 boolean tem = Boolean.parseBoolean(set.get(String.valueOf(i)).toString());
@@ -80,7 +82,6 @@ public class Pergunta {
             resourceList.add(resource);
 
         }
-    
         return myIntArray;
     }
 
@@ -89,6 +90,9 @@ public class Pergunta {
             double val = valores[i];
             double listSize = resourceList.size();
             double tempLIB = (double) -1*(val/listSize)*(1 - Math.log(val/listSize));
+            if (Double.isNaN(tempLIB)){
+                tempLIB = 0.0;
+            }
             resultadoLIB.add(tempLIB);
         }
 
